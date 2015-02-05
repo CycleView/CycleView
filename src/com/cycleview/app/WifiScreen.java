@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.net.wifi.SupplicantState;
 import android.os.Bundle;
 
 public class WifiScreen extends Activity {
@@ -33,10 +34,13 @@ public class WifiScreen extends Activity {
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(intent)) {
-					WifiInfo newWifiInfo = wifiManager.getConnectionInfo();
-					if (newWifiInfo != null && newWifiInfo.getSSID().equalsIgnoreCase(Constants.SSID))
-						wifiReady();
+				if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(intent.getAction())) {
+                    SupplicantState state = intent.getParcelableExtra(WifiManager.EXTRA_NEW_STATE);
+					if (SupplicantState.isValidState(state) && state == SupplicantState.COMPLETED) {
+						WifiInfo newWifiInfo = wifiManager.getConnectionInfo();
+						if (newWifiInfo != null && newWifiInfo.getSSID().equalsIgnoreCase(Constants.SSID))
+							wifiReady();
+					}
 				}
 			}
 		}, intentFilter);
@@ -46,3 +50,4 @@ public class WifiScreen extends Activity {
 		startActivity(new Intent(WifiScreen.this, CameraScreen.class));
 	}
 }
+
