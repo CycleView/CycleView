@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CycleView</string>
+    <string name="button_play">Play</string>
+    <string name="button_stop">Stop</string>
+    <string name="connect_to_wifi">Conecte-se à WiFi da sua CycleView!</string>
+</resources>
