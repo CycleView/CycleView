@@ -39,7 +39,7 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
             return;
         }
 
-        setContentView(R.layout.main);
+        setContentView(R.layout.camerascreen);
 
         SurfaceView sv = (SurfaceView) this.findViewById(R.id.surface_video);
         SurfaceHolder sh = sv.getHolder();

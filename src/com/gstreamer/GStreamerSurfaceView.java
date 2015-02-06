@@ -1,4 +1,4 @@
-package com.cycleview.app;
+package com.gstreamer;
 
 import android.content.Context;
 import android.util.AttributeSet;
