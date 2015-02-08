@@ -4,4 +4,6 @@
     <string name="button_play">Play</string>
     <string name="button_stop">Stop</string>
     <string name="connect_to_wifi">Conecte-se à WiFi da sua CycleView!</string>
+    <string name="show_settings">&gt;</string>
+    <string name="hide_settings">&lt;</string>
 </resources>
