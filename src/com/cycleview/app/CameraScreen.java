@@ -15,27 +15,8 @@ import com.cycleview.app.R;
 import com.gstreamer.GStreamer;
 
 public class CameraScreen extends Activity implements SurfaceHolder.Callback {
-	// Initialize native code, build pipeline, etc
-	private native void nativeInit();
-
-	// Destroy pipeline and shutdown native code
-	private native void nativeFinalize();
-
-	// Set pipeline to PLAYING
-	private native void nativePlay();
-
-	// Set pipeline to PAUSED
-	private native void nativePause();
-
-	// Initialize native class: cache Method IDs for callbacks
-	private static native boolean nativeClassInit();
-
-	private native void nativeSurfaceInit(Object surface);
-
-	private native void nativeSurfaceFinalize();
-
-	// Native code will use this to keep private data
-	private long native_custom_data;
+	
+	private TCPClient tcpThread;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +32,10 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		}
 
 		setContentView(R.layout.camerascreen);
+		
+		// Comunication with Base
+		tcpThread = new TCPClient(this);
+		tcpThread.start();
 
 		final View settingsLayout = (View) this
 				.findViewById(R.id.layout_settings);
@@ -73,6 +58,32 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		nativeInit();
 		nativePlay();
 	}
+	
+	public void showDanger() {
+		Log.v("CYCLEVIEW", "Danger!!");
+	}
+	
+	// Initialize native code, build pipeline, etc
+	private native void nativeInit();
+
+	// Destroy pipeline and shutdown native code
+	private native void nativeFinalize();
+
+	// Set pipeline to PLAYING
+	private native void nativePlay();
+
+	// Set pipeline to PAUSED
+	private native void nativePause();
+
+	// Initialize native class: cache Method IDs for callbacks
+	private static native boolean nativeClassInit();
+
+	private native void nativeSurfaceInit(Object surface);
+
+	private native void nativeSurfaceFinalize();
+
+	// Native code will use this to keep private data
+	private long native_custom_data;
 
 	protected void onDestroy() {
 		nativeFinalize();

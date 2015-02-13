@@ -10,7 +10,6 @@ public class SplashScreen extends Activity{
 	private static int timeout = 2000;
 
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
 
