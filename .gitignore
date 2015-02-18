@@ -33,3 +33,6 @@ proguard/
 
 # Log Files
 *.log
+
+# MAC OS X trash
+.DS_Store
