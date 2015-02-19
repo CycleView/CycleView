@@ -1,6 +1,8 @@
 package com.cycleview.app;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -12,11 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cycleview.app.R;
-import com.gstreamer.GStreamer;
+import com.cycleview.app.workers.Beeper;
+import com.cycleview.app.workers.PhotoHandler;
+import com.cycleview.app.workers.TCPClient;
+import com.gstreamer.*;
 
 public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 	
 	private TCPClient tcpThread;
+	private Beeper beeper;
+	private SurfaceView sv;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,23 +43,25 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		// Comunication with Base
 		tcpThread = new TCPClient(this);
 		tcpThread.start();
+		
+		// Beeper
+		beeper = new Beeper(this.getApplicationContext());
 
-		final View settingsLayout = (View) this
-				.findViewById(R.id.layout_settings);
-		((Button) this.findViewById(R.id.button_settings))
-				.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (settingsLayout.getVisibility() == View.GONE) {
-							settingsLayout.setVisibility(View.VISIBLE);
-							((Button) v).setText(R.string.hide_settings);
-						} else {
-							settingsLayout.setVisibility(View.GONE);
-							((Button) v).setText(R.string.show_settings);
-						}
-					}
-				});
+		final View settingsLayout = (View) this.findViewById(R.id.layout_settings);
+		((Button) this.findViewById(R.id.button_settings)).setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				if (settingsLayout.getVisibility() == View.GONE) {
+					settingsLayout.setVisibility(View.VISIBLE);
+					((Button) v).setText(R.string.hide_settings);
+				} else {
+					settingsLayout.setVisibility(View.GONE);
+					((Button) v).setText(R.string.show_settings);
+					showDanger();
+				}
+			}
+		});
 
-		SurfaceView sv = (SurfaceView) this.findViewById(R.id.surface_video);
+		sv = (SurfaceView) this.findViewById(R.id.surface_video);
 		sv.getHolder().addCallback(this);
 
 		nativeInit();
@@ -61,6 +70,15 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 	
 	public void showDanger() {
 		Log.v("CYCLEVIEW", "Danger!!");
+		
+		beeper.beep();
+
+		Bitmap bitmap = Bitmap.createBitmap(sv.getMeasuredWidth(),
+				sv.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		sv.layout(0, 0, sv.getMeasuredWidth(), sv.getMeasuredHeight());
+		sv.draw(canvas);
+		PhotoHandler.savePhoto(bitmap, this.getApplicationContext());
 	}
 	
 	// Initialize native code, build pipeline, etc
