@@ -8,17 +8,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="15" >
-
-        <com.gstreamer.GStreamerSurfaceView
-            android:id="@+id/surface_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        
+		<FrameLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" >
+	
+	        <com.gstreamer.GStreamerSurfaceView
+	            android:id="@+id/surface_video"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" />
+	        
+	        <ImageView android:src="@drawable/grid"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:alpha="0.5" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textview_status"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="14"
             android:text="Status" />
     </LinearLayout>

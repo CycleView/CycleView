@@ -56,7 +56,6 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 				} else {
 					settingsLayout.setVisibility(View.GONE);
 					((Button) v).setText(R.string.show_settings);
-					showDanger();
 				}
 			}
 		});
