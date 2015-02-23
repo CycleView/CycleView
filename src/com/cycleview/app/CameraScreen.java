@@ -3,6 +3,7 @@ package com.cycleview.app;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -39,6 +40,14 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		}
 
 		setContentView(R.layout.camerascreen);
+		
+//		TextView tx = (TextView)findViewById(R.id.tv_menu);
+//		Typeface custom_font = Typeface.createFromAsset(getAssets(), "BLANCH_CAPS_LIGHT.otf");
+//		tx.setTypeface(custom_font);
+//		  
+	        
+	 
+	       
 		
 		// Comunication with Base
 		tcpThread = new TCPClient(this);
