@@ -1,8 +1,11 @@
 package com.cycleview.app;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
+import android.media.ImageReader;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -20,11 +23,12 @@ import com.cycleview.app.workers.TCPClient;
 import com.gstreamer.*;
 
 public class CameraScreen extends Activity implements SurfaceHolder.Callback {
-	
+
 	private TCPClient tcpThread;
 	private Beeper beeper;
 	private SurfaceView sv;
-
+	private Button botaoVerImagens;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,11 +43,19 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		}
 
 		setContentView(R.layout.camerascreen);
-		
+
+		/*TextView tx = (TextView)findViewById(R.id.tv_menu);
+		Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/BLANCH_CAPS-webfont.ttf");
+		tx.setTypeface(custom_font);
+		 */
+
+
+
+
 		// Comunication with Base
 		tcpThread = new TCPClient(this);
 		tcpThread.start();
-		
+
 		// Beeper
 		beeper = new Beeper(this.getApplicationContext());
 
@@ -65,11 +77,23 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 
 		nativeInit();
 		nativePlay();
-	}
-	
-	public void showDanger() {
-		Log.v("CYCLEVIEW", "Danger!!");
+
+
+		botaoVerImagens = (Button) findViewById(R.id.bt_ver_imagens_galeria);
 		
+
+		botaoVerImagens.setOnClickListener(new View.OnClickListener() {
+        public void onClick(View v) {
+        
+        	
+        }
+    });
+
+	}
+
+	public void showDanger() {	
+		Log.v("CYCLEVIEW", "Danger!!");
+
 		beeper.beep();
 
 		Bitmap bitmap = Bitmap.createBitmap(sv.getMeasuredWidth(),
@@ -79,7 +103,7 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback {
 		sv.draw(canvas);
 		PhotoHandler.savePhoto(bitmap, this.getApplicationContext());
 	}
-	
+
 	// Initialize native code, build pipeline, etc
 	private native void nativeInit();
 

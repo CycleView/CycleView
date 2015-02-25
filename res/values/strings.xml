@@ -4,6 +4,11 @@
     <string name="button_play">Play</string>
     <string name="button_stop">Stop</string>
     <string name="connect_to_wifi">Conecte-se à WiFi da sua CycleView!</string>
-    <string name="show_settings">&gt;</string>
+    <string name="show_settings"> </string>
     <string name="hide_settings">&lt;</string>
+    <string name="button_see_images">Ver Galeria de Fotos</string>
+    <string name="button_um_dia">1 dia</string>
+    <string name="button_sete_dias">7 dias</string>
+    <string name="button_trinta_dias">30 dias</string>
+    <string name="tv_permanencia_das_imagens">Permanência das Fotos</string>
 </resources>

@@ -8,20 +8,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="15" >
-        
-		<FrameLayout
-		    android:layout_width="match_parent"
-		    android:layout_height="match_parent" >
-	
-	        <com.gstreamer.GStreamerSurfaceView
-	            android:id="@+id/surface_video"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent" />
-	        
-	        <ImageView android:src="@drawable/grid"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:alpha="0.5" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <com.gstreamer.GStreamerSurfaceView
+                android:id="@+id/surface_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </FrameLayout>
 
         <TextView
@@ -41,17 +36,81 @@
             android:id="@+id/layout_settings"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
+            android:alpha="0.7"
+            android:background="@drawable/layoutsettings"
             android:orientation="vertical"
+            android:radius="10dp"
             android:visibility="gone" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/tv_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
+                android:layout_gravity="center"
+                android:fontFamily="BLANCH_CAPS-webfont"
+                android:padding="10dp"
+                android:text="Menu"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#000000" />
+                android:textColor="#ffff8800"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/bt_ver_imagens_galeria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_layout"
+                android:drawableLeft="@drawable/camera_orange"
+                android:paddingBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="30dp"
+                android:text="@string/button_see_images"
+                android:textColor="#ff8800"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_permanencia_imagens"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/watch"
+                android:paddingBottom="10dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="30dp"
+                android:text="@string/tv_permanencia_das_imagens"
+                android:textColor="#ff8800"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_tempo_das_fotos_na_galeria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="30dp" >
+
+                <RadioButton
+                    android:id="@+id/bt_tempo_fotos_um"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/button_um_dia"
+                    android:textColor="#ff8800" />
+
+                <RadioButton
+                    android:id="@+id/bt_tempo_fotos_sete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_sete_dias"
+                    android:textColor="#ff8800" />
+
+                <RadioButton
+                    android:id="@+id/bt_tempo_fotos_trinta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/button_trinta_dias"
+                    android:textColor="#ff8800" />
+            </RadioGroup>
         </LinearLayout>
 
         <Button
@@ -60,7 +119,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="@string/show_settings" />
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/settingsbottom" />
     </LinearLayout>
 
 </FrameLayout>
