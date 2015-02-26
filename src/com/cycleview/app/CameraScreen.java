@@ -30,18 +30,19 @@ import com.cycleview.app.workers.PhotoHandler;
 import com.cycleview.app.workers.TCPClient;
 import com.gstreamer.*;
 
-public class CameraScreen extends Activity implements SurfaceHolder.Callback, MediaScannerConnectionClient{
+public class CameraScreen extends Activity implements SurfaceHolder.Callback,
+		MediaScannerConnectionClient {
 
 	private TCPClient tcpThread;
 	private Beeper beeper;
 	private SurfaceView sv;
 	private Button botaoVerImagens;
-	
+
 	private MediaScannerConnection conn;
-	
-	 public String[] allFiles;
-	 private String SCAN_PATH ;
-	 private static final String FILE_TYPE="image/*";
+
+	public String[] allFiles;
+	private String SCAN_PATH;
+	private static final String FILE_TYPE = "image/*";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,13 +59,11 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback, Me
 
 		setContentView(R.layout.camerascreen);
 
-		/*TextView tx = (TextView)findViewById(R.id.tv_menu);
-		Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/BLANCH_CAPS-webfont.ttf");
-		tx.setTypeface(custom_font);
+		/*
+		 * TextView tx = (TextView)findViewById(R.id.tv_menu); Typeface
+		 * custom_font = Typeface.createFromAsset(getAssets(),
+		 * "fonts/BLANCH_CAPS-webfont.ttf"); tx.setTypeface(custom_font);
 		 */
-
-
-
 
 		// Comunication with Base
 		tcpThread = new TCPClient(this);
@@ -73,18 +72,20 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback, Me
 		// Beeper
 		beeper = new Beeper(this.getApplicationContext());
 
-		final View settingsLayout = (View) this.findViewById(R.id.layout_settings);
-		((Button) this.findViewById(R.id.button_settings)).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				if (settingsLayout.getVisibility() == View.GONE) {
-					settingsLayout.setVisibility(View.VISIBLE);
-					((Button) v).setText(R.string.hide_settings);
-				} else {
-					settingsLayout.setVisibility(View.GONE);
-					((Button) v).setText(R.string.show_settings);
-				}
-			}
-		});
+		final View settingsLayout = (View) this
+				.findViewById(R.id.layout_settings);
+		((Button) this.findViewById(R.id.button_settings))
+				.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						if (settingsLayout.getVisibility() == View.GONE) {
+							settingsLayout.setVisibility(View.VISIBLE);
+							((Button) v).setText(R.string.hide_settings);
+						} else {
+							settingsLayout.setVisibility(View.GONE);
+							((Button) v).setText(R.string.show_settings);
+						}
+					}
+				});
 
 		sv = (SurfaceView) this.findViewById(R.id.surface_video);
 		sv.getHolder().addCallback(this);
@@ -92,56 +93,52 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback, Me
 		nativeInit();
 		nativePlay();
 
-
 		botaoVerImagens = (Button) findViewById(R.id.bt_ver_imagens_galeria);
-
 
 		botaoVerImagens.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				/*File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), Constants.appDirectoryName);
-				// This location works best if you want the created images to be shared
-				// between applications and persist after your app has been uninstalled.
+				/*
+				 * File mediaStorageDir = new
+				 * File(Environment.getExternalStoragePublicDirectory
+				 * (Environment.DIRECTORY_PICTURES),
+				 * Constants.appDirectoryName); // This location works best if
+				 * you want the created images to be shared // between
+				 * applications and persist after your app has been uninstalled.
+				 * 
+				 * // Create the storage directory if it does not exist
+				 * Constants.appDirectoryName =
+				 * Environment.getExternalStorageDirectory().toString(); if (!
+				 * mediaStorageDir.exists()){ if (! mediaStorageDir.mkdirs()){
+				 * Log.d("MyCameraApp", "failed to create directory"); } }
+				 */
 
-				// Create the storage directory if it does not exist
-				Constants.appDirectoryName = Environment.getExternalStorageDirectory().toString();
-				if (! mediaStorageDir.exists()){
-					if (! mediaStorageDir.mkdirs()){
-						Log.d("MyCameraApp", "failed to create directory");
-					}
-				}*/
-
-				/*CameraScreen cs = new CameraScreen();
-				cs.buttonGallery1(v);*/
+				/*
+				 * CameraScreen cs = new CameraScreen(); cs.buttonGallery1(v);
+				 */
 				final String path = android.os.Environment.DIRECTORY_PICTURES;
 
-				//Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-				// 2. pick image only
-	  			//intent.setType(path+"/sdcard/Pictures/CYCLEVIEW/*");
-				// 3. start activity
-				//intent.setType("file:///sdcard/image/CycleView/*");
-				 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-						 "content://media/internal/images/media"));
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri
+						.parse("content://media/internal/images/media/CYCLEVIEW/"));
 				startActivityForResult(intent, 0);
 			}
 		});
 
 	}
-	public void buttonGallery(View v) { 
-		Intent intent = new Intent(); 
+
+	public void buttonGallery(View v) {
+		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_GET_CONTENT);
-		//intent.setDataAndType(Uri.(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), Constants.appDirectoryName), "image/*"); 
-		startActivity(intent); 
+		startActivity(intent);
 	}
 
-	public void buttonGallery1(View v) { 
-		Intent intent = new Intent(); 
+	public void buttonGallery1(View v) {
+		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_GET_CONTENT);
 		intent.setType("/CYCLEVIEW/*");
 		startActivity(intent);
-		//startActivityForResult(intent, 0);
 	}
 
-	public void showDanger() {	
+	public void showDanger() {
 		Log.v("CYCLEVIEW", "Danger!!");
 
 		beeper.beep();
@@ -220,15 +217,17 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback, Me
 		Log.d("GStreamer", "Surface destroyed");
 		nativeSurfaceFinalize();
 	}
+
 	@Override
 	public void onMediaScannerConnected() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	@Override
 	public void onScanCompleted(String path, Uri uri) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
