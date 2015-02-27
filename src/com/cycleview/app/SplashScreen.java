@@ -27,7 +27,7 @@ public class SplashScreen extends Activity{
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				startActivity(new Intent(SplashScreen.this, WifiScreen.class));
+				startActivity(new Intent(SplashScreen.this, CameraScreen.class));
 				finish();
 			}
 		}, remainingWaitTime);

@@ -1,15 +1,10 @@
 package com.cycleview.app;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
-import android.media.ImageReader;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
@@ -59,12 +54,6 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback,
 
 		setContentView(R.layout.camerascreen);
 
-		/*
-		 * TextView tx = (TextView)findViewById(R.id.tv_menu); Typeface
-		 * custom_font = Typeface.createFromAsset(getAssets(),
-		 * "fonts/BLANCH_CAPS-webfont.ttf"); tx.setTypeface(custom_font);
-		 */
-
 		// Comunication with Base
 		tcpThread = new TCPClient(this);
 		tcpThread.start();
@@ -77,13 +66,9 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback,
 		((Button) this.findViewById(R.id.button_settings))
 				.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
-						if (settingsLayout.getVisibility() == View.GONE) {
-							settingsLayout.setVisibility(View.VISIBLE);
-							((Button) v).setText(R.string.hide_settings);
-						} else {
-							settingsLayout.setVisibility(View.GONE);
-							((Button) v).setText(R.string.show_settings);
-						}
+						settingsLayout.setVisibility(settingsLayout
+								.getVisibility() == View.GONE ? View.VISIBLE
+								: View.GONE);
 					}
 				});
 
@@ -94,48 +79,14 @@ public class CameraScreen extends Activity implements SurfaceHolder.Callback,
 		nativePlay();
 
 		botaoVerImagens = (Button) findViewById(R.id.bt_ver_imagens_galeria);
-
 		botaoVerImagens.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				/*
-				 * File mediaStorageDir = new
-				 * File(Environment.getExternalStoragePublicDirectory
-				 * (Environment.DIRECTORY_PICTURES),
-				 * Constants.appDirectoryName); // This location works best if
-				 * you want the created images to be shared // between
-				 * applications and persist after your app has been uninstalled.
-				 * 
-				 * // Create the storage directory if it does not exist
-				 * Constants.appDirectoryName =
-				 * Environment.getExternalStorageDirectory().toString(); if (!
-				 * mediaStorageDir.exists()){ if (! mediaStorageDir.mkdirs()){
-				 * Log.d("MyCameraApp", "failed to create directory"); } }
-				 */
-
-				/*
-				 * CameraScreen cs = new CameraScreen(); cs.buttonGallery1(v);
-				 */
-				final String path = android.os.Environment.DIRECTORY_PICTURES;
-
-				Intent intent = new Intent(Intent.ACTION_VIEW, Uri
-						.parse("content://media/internal/images/media/CYCLEVIEW/"));
-				startActivityForResult(intent, 0);
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setDataAndType(Uri.fromFile(Constants.imageRoot), "image/*");
+				startActivity(Intent.createChooser(intent, "Abrir pasta"));
 			}
 		});
 
-	}
-
-	public void buttonGallery(View v) {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		startActivity(intent);
-	}
-
-	public void buttonGallery1(View v) {
-		Intent intent = new Intent();
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		intent.setType("/CYCLEVIEW/*");
-		startActivity(intent);
 	}
 
 	public void showDanger() {
